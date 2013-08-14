@@ -18,22 +18,21 @@
  * along with BTRFdom.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "IBtrfBlock.h"
-#include "BtrfBlock.h"
-#include "TmlBlock.h"
-#include "BtrfRootBlock.h"
+#ifndef GUID_H
+#define GUID_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <string.h>
 
-DLLEXPORT_BTRF IBtrfBlock * DLLCALLCONV createBtrfBlock(ITmlBlock *fieldInfo, IBtrfRootBlock *rootBlock) {
-	BtrfBlock *block = new BtrfBlock;
-	block->construct(static_cast<TmlBlock*>(fieldInfo), static_cast<BtrfRootBlock*>(rootBlock));
+typedef struct {
+	unsigned int  Data1;
+	unsigned short Data2;
+	unsigned short Data3;
+	unsigned char  Data4[ 8 ];
+} Guid;
 
-	return block;
-}
+inline bool operator==(const Guid& guidOne, const Guid& guidOther)
+	{ return memcmp(&guidOne, &guidOther, sizeof(Guid)) == 0; }
+inline bool operator!=(const Guid& g1, const Guid& g2)
+	{ return !(g1 == g2); }
 
-#ifdef __cplusplus
-}
-#endif
+#endif // GUID_H

@@ -18,27 +18,20 @@
  * along with BTRFdom.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GUID_H
-#define GUID_H
+#include "IBtrfRootBlock.h"
+#include "BtrfRootBlock.h"
 
-typedef union {
-	struct {
-		unsigned int  Data1;
-		unsigned short Data2;
-		unsigned short Data3;
-		unsigned char  Data4[ 8 ];
-	};
-	unsigned int rawData[4];
-} Guid;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-inline bool operator==(const Guid& guidOne, const Guid& guidOther)
-	{ return
-			(guidOne.rawData[0] == guidOther.rawData[0]) &&
-			(guidOne.rawData[1] == guidOther.rawData[1]) &&
-			(guidOne.rawData[2] == guidOther.rawData[2]) &&
-			(guidOne.rawData[3] == guidOther.rawData[3]);
-	}
-inline bool operator!=(const Guid& g1, const Guid& g2)
-	{ return !(g1 == g2); }
+#ifdef _MSC_VER
+#pragma comment(linker, "/export:createBtrfRootBlock=_createBtrfRootBlock@4")
+#endif
+DLLEXPORT_BTRF IBtrfRootBlock * DLLCALLCONV createBtrfRootBlock(ITmlFile *tmlFile) {
+	return new BtrfRootBlock(static_cast<TmlFile*>(tmlFile));
+}
 
-#endif // GUID_H
+#ifdef __cplusplus
+}
+#endif
